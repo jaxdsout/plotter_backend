@@ -1,12 +1,12 @@
 from rest_framework import viewsets
 
-from .models import Agent, Client, List, Option
-from .serializers import AgentSerializer, ClientSerializer, ListSerializer, OptionSerializer
+from .models import Profile, Client, List, Option
+from .serializers import ProfileSerializer, ClientSerializer, ListSerializer, OptionSerializer
 
 
-class AgentViewSet(viewsets.ModelViewSet):
-    queryset = Agent.objects.all()
-    serializer_class = AgentSerializer
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
 
 class ClientViewSet(viewsets.ModelViewSet):

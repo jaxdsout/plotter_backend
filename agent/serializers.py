@@ -1,25 +1,30 @@
 from rest_framework import serializers
-from .models import Agent, Client, List, Option
+from .models import Profile, Client, List, Option
+from property.serializers import PropertyNameSerializer
 
 
-class AgentSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     first_name = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Agent
-        fields = (
-            'trec_id',
-            'user',
-            'full_name',
-            'first_name'
-        )
 
     def get_full_name(self, obj):
         return obj.user.get_full_name()
 
     def get_first_name(self, obj):
         return obj.user.first_name
+
+    class Meta:
+        model = Profile
+        fields = (
+            'trec',
+            'user',
+            'website',
+            'avatar',
+            'phone_number',
+            'first_name',
+            'full_name'
+
+        )
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -30,8 +35,8 @@ class ClientSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'email',
-            'phone_number',
             'agent',
+            'phone_number',
             'lists'
         )
 
@@ -41,7 +46,7 @@ class ListSerializer(serializers.ModelSerializer):
         model = List
         fields = (
             'id',
-            'creation',
+            'date',
             'agent',
             'client',
             'options'
@@ -49,15 +54,20 @@ class ListSerializer(serializers.ModelSerializer):
 
 
 class OptionSerializer(serializers.ModelSerializer):
+    prop_name = serializers.SerializerMethodField()
+    def get_prop_name(self, obj):
+        return obj.property.name
+
     class Meta:
         model = Option
         fields = (
             'property',
+            'prop_name',
             'price',
             'unit_number',
             'layout',
             'sq_ft',
-            'date_available',
-            'notes_specials',
+            'available',
+            'notes',
             'list'
         )

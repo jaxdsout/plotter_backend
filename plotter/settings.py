@@ -72,9 +72,9 @@ WSGI_APPLICATION = 'plotter.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'plotter',
-        'USER': 'plotter_jax',
-        'PASSWORD': 'plotter123',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': 'localhost',
         'PORT': '5432',
     }

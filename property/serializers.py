@@ -16,3 +16,9 @@ class PropertySerializer(serializers.ModelSerializer):
             'latitude',
             'longitude'
         )
+
+
+class PropertyNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property
+        fields = ('name',)
