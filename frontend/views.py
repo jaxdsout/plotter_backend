@@ -1,11 +1,15 @@
-from django.views import generic
+import requests
 from user.forms import UserForm, LoginForm
 from user.models import User
+from agent.forms import ProfileForm
+from agent.models import Profile
+
+from django.views import generic
 from django.contrib import messages
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import get_object_or_404, redirect
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.http import HttpResponseRedirect
 
@@ -29,7 +33,6 @@ class UserRegister(generic.FormView):
             last_name=form.cleaned_data['last_name'],
             email=form.cleaned_data['email'],
             password=form.cleaned_data['password'],
-            is_active=True
         )
         user.save()
 
@@ -60,25 +63,66 @@ class UserVerify(generic.TemplateView):
 class UserLogin(generic.FormView):
     template_name = "user_login.html"
     form_class = LoginForm
-    success_url = "/dashboard/"
+    success_url = "/user/dashboard/"
 
     def form_valid(self, form):
-        email = form.cleaned_data['email']
-        password = form.cleaned_data['password']
-        user = authenticate(email=email, password=password)
+        user = authenticate(email=form.cleaned_data['email'], password=form.cleaned_data['password'])
 
         if user is not None and user.is_active:
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
             refresh_token = str(refresh)
-            print("access", access_token)
-            print("refresh", refresh_token)
+            id_token = str(user.id)
 
             response = HttpResponseRedirect(self.success_url)
             response.set_cookie('access', access_token)
             response.set_cookie('refresh', refresh_token)
+            response.set_cookie('id', id_token)
+
             return response
+
         else:
-            messages.error(self.request, "Invalid email or password.")
+            messages.error(self.request, "Please enter valid email & password")
             return self.form_invalid(form)
+
+
+class UserLogout(generic.RedirectView):
+    url = '/'
+
+    def get(self, request, *args, **kwargs):
+        access_token = request.COOKIES.get('access')
+        refresh_token = request.COOKIES.get('refresh')
+
+        if access_token:
+            try:
+                token = RefreshToken(access_token)
+                token.blacklist()
+            except Exception as e:
+                print(f"Error blacklisting token: {e}")
+
+        response = HttpResponseRedirect(self.url)
+        response.delete_cookie('access')
+        response.delete_cookie('refresh')
+        logout(request)
+
+        return response
+
+
+class UserProfile(generic.FormView):
+    template_name = "user_profile.html"
+    form_class = ProfileForm
+    success_url = reverse_lazy('user_profile')
+
+    def form_valid(self, form, request):
+        profile = form.save(commit=False)
+        id_token = self.request.COOKIES.get('id')
+        profile.user = id_token
+        profile.save()
+        access_token = self.request.COOKIES.get('access')
+        if access_token and id_token:
+            headers = {'Authorization': f'Bearer {access_token}'}
+            response = requests.get('http://localhost:8000/api/profiles/', headers=headers)
+            data = response.json()
+        return super().form_valid(form)
+
 

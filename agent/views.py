@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-
+from rest_framework.permissions import IsAuthenticated
 from .models import Profile, Client, List, Option
 from .serializers import ProfileSerializer, ClientSerializer, ListSerializer, OptionSerializer
 

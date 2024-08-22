@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+        <p>Hey, User! Here's your Profile</p>
+        <div>
+           <form method="post" action="/api/profiles/">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Update Profile">
+            </form>
+        </div>
+    </div>
+{% endblock %}

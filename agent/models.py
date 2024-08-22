@@ -9,7 +9,7 @@ class Profile(models.Model):
     trec = models.CharField(unique=True, max_length=6)
     website = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=20)
-    avatar = models.ImageField(blank=True)
+    avatar = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.user.get_full_name()
