@@ -20,3 +20,9 @@ class UserForm(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(attrs={'autocomplete': 'off'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'off'}))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get("email")
+        password = cleaned_data.get("password")
+

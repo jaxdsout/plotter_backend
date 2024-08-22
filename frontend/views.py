@@ -5,10 +5,17 @@ from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import get_object_or_404, redirect
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.http import HttpResponseRedirect
 
 
 class HomePage(generic.TemplateView):
     template_name = "home.html"
+
+
+class Dashboard(generic.TemplateView):
+    template_name = "dashboard.html"
 
 
 class UserRegister(generic.FormView):
@@ -54,3 +61,24 @@ class UserLogin(generic.FormView):
     template_name = "user_login.html"
     form_class = LoginForm
     success_url = "/dashboard/"
+
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password']
+        user = authenticate(email=email, password=password)
+
+        if user is not None and user.is_active:
+            refresh = RefreshToken.for_user(user)
+            access_token = str(refresh.access_token)
+            refresh_token = str(refresh)
+            print("access", access_token)
+            print("refresh", refresh_token)
+
+            response = HttpResponseRedirect(self.success_url)
+            response.set_cookie('access', access_token)
+            response.set_cookie('refresh', refresh_token)
+            return response
+        else:
+            messages.error(self.request, "Invalid email or password.")
+            return self.form_invalid(form)
+
