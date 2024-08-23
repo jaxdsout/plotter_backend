@@ -4,14 +4,15 @@ from user.models import User
 from agent.forms import ProfileForm
 from agent.models import Profile
 
-from django.views import generic
+from django.views import generic, View
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.tokens import default_token_generator
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate, logout
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
 
 class HomePage(generic.TemplateView):
@@ -33,6 +34,7 @@ class UserRegister(generic.FormView):
             last_name=form.cleaned_data['last_name'],
             email=form.cleaned_data['email'],
             password=form.cleaned_data['password'],
+            re_password=form.cleaned_data['re_password'],
         )
         user.save()
 
@@ -113,16 +115,23 @@ class UserProfile(generic.FormView):
     form_class = ProfileForm
     success_url = reverse_lazy('user_profile')
 
+    def get(self, request, *args, **kwargs):
+        user_id = request.COOKIES.get('id')
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form, 'user_id': user_id})
+
     def form_valid(self, form, request):
-        profile = form.save(commit=False)
-        id_token = self.request.COOKIES.get('id')
-        profile.user = id_token
-        profile.save()
-        access_token = self.request.COOKIES.get('access')
-        if access_token and id_token:
-            headers = {'Authorization': f'Bearer {access_token}'}
-            response = requests.get('http://localhost:8000/api/profiles/', headers=headers)
-            data = response.json()
-        return super().form_valid(form)
+        if request.method == 'POST':
+            print("post")
+        if request.method == 'PUT':
+            profile = form.save(commit=False)
+            profile.save()
+            access_token = self.request.COOKIES.get('access')
+            if access_token:
+                headers = {'Authorization': f'Bearer {access_token}'}
+                response = requests.get('http://localhost:8000/api/profiles/', headers=headers)
+                data = response.json()
+                return super().form_valid(form)
+
 
 

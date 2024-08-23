@@ -3,10 +3,17 @@
     <div>
         <p>Hey, User! Here's your Profile</p>
         <div>
-           <form method="post" action="/api/profiles/">
+            <h4>PROFILE</h4>
+            <p>TREC ID: {{ profile.trec }}</p>
+            <p>Website: {{ profile.website }}</p>
+            <p>Phone: {{ profile.phone_number }}</p>
+        </div>
+        <div>
+            <h4>EDIT YOUR PROFILE</h4>
+           <form data-method='PUT' enctype="multipart/form-data" action="/api/profiles/{{ user_id }}/">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="submit" value="Update Profile">
+               <input type="submit" value="Update Profile">
             </form>
         </div>
     </div>
