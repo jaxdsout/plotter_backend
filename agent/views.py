@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from .models import Profile, Client, List, Option
 from .serializers import ProfileSerializer, ClientSerializer, ListSerializer, OptionSerializer
 
@@ -7,7 +7,6 @@ from .serializers import ProfileSerializer, ClientSerializer, ListSerializer, Op
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()

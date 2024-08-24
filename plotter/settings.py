@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     'user',
     'property',
     'agent',
-    'frontend',
     'corsheaders',
     'djoser',
     'storages',
@@ -131,6 +130,9 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = 'user.User'
+
+DOMAIN = 'localhost:3000/#'
+SITE_NAME = 'Plotter'
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
