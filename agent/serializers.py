@@ -6,12 +6,17 @@ from property.serializers import PropertyNameSerializer
 class ProfileSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     first_name = serializers.SerializerMethodField()
+    email = serializers.SerializerMethodField()
+
 
     def get_full_name(self, obj):
         return obj.user.get_full_name()
 
     def get_first_name(self, obj):
         return obj.user.first_name
+
+    def get_email(self, obj):
+        return obj.user.email
 
     class Meta:
         model = Profile
@@ -23,12 +28,15 @@ class ProfileSerializer(serializers.ModelSerializer):
             'avatar',
             'phone_number',
             'first_name',
-            'full_name'
+            'full_name',
+            'email'
 
         )
 
 
 class ClientSerializer(serializers.ModelSerializer):
+    lists = serializers.SerializerMethodField()
+
     class Meta:
         model = Client
         fields = (
@@ -40,6 +48,9 @@ class ClientSerializer(serializers.ModelSerializer):
             'phone_number',
             'lists'
         )
+
+    def get_lists(self, obj):
+        return ListSerializer(obj.lists.all(), many=True).data
 
 
 class ListSerializer(serializers.ModelSerializer):
