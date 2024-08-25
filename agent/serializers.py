@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profile, Client, List, Option
+from .models import Profile, Client, List, Option, Deal, Card
 from property.serializers import PropertyNameSerializer
 
 
@@ -54,6 +54,9 @@ class ClientSerializer(serializers.ModelSerializer):
 
 
 class ListSerializer(serializers.ModelSerializer):
+    options = serializers.SerializerMethodField()
+    client_name = serializers.SerializerMethodField()
+
     class Meta:
         model = List
         fields = (
@@ -61,8 +64,15 @@ class ListSerializer(serializers.ModelSerializer):
             'date',
             'agent',
             'client',
-            'options'
+            'options',
+            'client_name'
         )
+
+    def get_options(self, obj):
+        return OptionSerializer(obj.options.all(), many=True).data
+
+    def get_client_name(self, obj):
+        return f"{obj.client.first_name} {obj.client.last_name}"
 
 
 class OptionSerializer(serializers.ModelSerializer):
@@ -82,4 +92,31 @@ class OptionSerializer(serializers.ModelSerializer):
             'available',
             'notes',
             'list'
+        )
+
+
+class DealSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Deal
+        fields = (
+            'property',
+            'rent',
+            'rate',
+            'commission',
+            'flat_fee',
+            'move_date',
+            'unit_no',
+            'lease_term',
+        )
+
+
+class CardSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Card
+        fields = (
+            'property',
+            'agent',
+            'client'
         )

@@ -44,3 +44,21 @@ class Option(models.Model):
     available = models.DateField(blank=True)
     notes = models.TextField('Notes / Specials', blank=True)
     list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='options')
+
+
+class Deal(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    rent = models.IntegerField()
+    rate = models.DecimalField(max_digits=5, decimal_places=2)
+    commission = models.DecimalField(max_digits=10, decimal_places=2)
+    flat_fee = models.IntegerField(blank=True, null=True)
+    move_date = models.DateField()
+    unit_no = models.IntegerField()
+    lease_term = models.IntegerField()
+
+
+class Card(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards')
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='cards')
+

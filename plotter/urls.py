@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from agent.views import ProfileViewSet, ClientViewSet, ListViewSet, OptionViewSet
+from agent.views import ProfileViewSet, ClientViewSet, ListViewSet, OptionViewSet, CardViewSet, DealViewSet
 from property.views import PropertyViewSet
 
 router = DefaultRouter()
@@ -11,6 +11,8 @@ router.register(r'clients', ClientViewSet, basename='clients')
 router.register(r'lists', ListViewSet, basename='lists')
 router.register(r'options', OptionViewSet, basename='options')
 router.register(r'properties', PropertyViewSet, basename='properties')
+router.register(r'deals', DealViewSet, basename='deals')
+router.register(r'cards', CardViewSet, basename='cards')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
