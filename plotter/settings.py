@@ -153,6 +153,7 @@ DJOSER = {
     'SERIALIZERS': {
         'user_create': 'user.serializers.UserCreateSerializer',
         'user': 'user.serializers.UserCreateSerializer',
+        'current_user': 'user.serializers.UserLoadSerializer',
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
         'token': 'djoser.serializers.TokenSerializer',
         'token_create': 'djoser.serializers.TokenCreateSerializer',

@@ -14,7 +14,8 @@ class PropertySerializer(serializers.ModelSerializer):
             'neighborhood',
             'address',
             'latitude',
-            'longitude'
+            'longitude',
+            'email'
         )
 
 

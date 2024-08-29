@@ -15,4 +15,8 @@ class Property(models.Model):
     address = models.CharField(max_length=250)
     latitude = models.CharField(max_length=100)
     longitude = models.CharField(max_length=100)
+    email = models.EmailField(max_length=250)
+
+    def __str__(self):
+        return self.name
 

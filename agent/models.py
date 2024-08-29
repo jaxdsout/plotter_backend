@@ -27,22 +27,22 @@ class Client(models.Model):
 
 
 class List(models.Model):
-    date = models.DateTimeField(blank=True, auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lists')
-    client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, blank=True, related_name='lists')
+    client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, related_name='lists')
 
     def __str__(self):
-        return str(self.client) + " List No. " + str(self.id)
+        return str(self.client) + " List # " + str(self.id)
 
 
 class Option(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    unit_number = models.CharField(max_length=20)
-    layout = models.CharField(max_length=50)
-    sq_ft = models.PositiveIntegerField()
-    available = models.DateField(blank=True)
-    notes = models.TextField('Notes / Specials', blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    unit_number = models.CharField(max_length=20, null=True, blank=True)
+    layout = models.CharField(max_length=50, null=True, blank=True)
+    sq_ft = models.PositiveIntegerField(null=True, blank=True)
+    available = models.DateField(blank=True, null=True)
+    notes = models.TextField('Notes / Specials', blank=True, null=True)
     list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='options')
 
 
@@ -55,10 +55,12 @@ class Deal(models.Model):
     move_date = models.DateField()
     unit_no = models.IntegerField()
     lease_term = models.IntegerField()
+    agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='deals')
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='deals')
 
 
 class Card(models.Model):
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='cards')
     agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards')
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='cards')
 
