@@ -77,12 +77,15 @@ class ListSerializer(serializers.ModelSerializer):
         return None
 
 
-
 class OptionSerializer(serializers.ModelSerializer):
+    prop_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Option
         fields = (
+            'id',
             'property',
+            'prop_name',
             'price',
             'unit_number',
             'layout',
@@ -91,6 +94,9 @@ class OptionSerializer(serializers.ModelSerializer):
             'notes',
             'list'
         )
+
+    def get_prop_name(self, obj):
+        return obj.property.name
 
 
 class DealSerializer(serializers.ModelSerializer):

@@ -40,7 +40,7 @@ class Option(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     unit_number = models.CharField(max_length=20, null=True, blank=True)
     layout = models.CharField(max_length=50, null=True, blank=True)
-    sq_ft = models.PositiveIntegerField(null=True, blank=True)
+    sq_ft = models.CharField(max_length=10, null=True, blank=True)
     available = models.DateField(blank=True, null=True)
     notes = models.TextField('Notes / Specials', blank=True, null=True)
     list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='options')
