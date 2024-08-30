@@ -41,10 +41,10 @@ class ClientSerializer(serializers.ModelSerializer):
         model = Client
         fields = (
             'id',
+            'agent',
             'first_name',
             'last_name',
             'email',
-            'agent',
             'phone_number',
             'lists'
         )
@@ -65,7 +65,8 @@ class ListSerializer(serializers.ModelSerializer):
             'agent',
             'client',
             'options',
-            'full_name'
+            'full_name',
+            'link_url'
         )
 
     def get_options(self, obj):
