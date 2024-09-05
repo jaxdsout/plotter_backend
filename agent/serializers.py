@@ -128,13 +128,13 @@ class DealSerializer(serializers.ModelSerializer):
         model = Deal
         fields = (
             'property',
+            'unit_no',
+            'move_date',
+            'lease_term',
             'rent',
             'rate',
             'commission',
             'flat_fee',
-            'move_date',
-            'unit_no',
-            'lease_term',
             'agent',
             'client'
         )

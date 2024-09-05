@@ -50,12 +50,12 @@ class Option(models.Model):
 class Deal(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     rent = models.IntegerField()
-    rate = models.DecimalField(max_digits=5, decimal_places=2)
+    rate = models.IntegerField()
     commission = models.DecimalField(max_digits=10, decimal_places=2)
-    flat_fee = models.IntegerField(blank=True, null=True)
+    flat_fee = models.DecimalField(max_digits=10, decimal_places=2)
     move_date = models.DateField()
-    unit_no = models.IntegerField()
-    lease_term = models.IntegerField()
+    unit_no = models.CharField(max_length=255)
+    lease_term = models.CharField(max_length=255)
     agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='deals')
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='deals')
 
