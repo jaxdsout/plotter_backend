@@ -4,6 +4,9 @@ from .models import Profile, Client, List, Option, Card, Deal
 from .serializers import ProfileSerializer, ClientSerializer, ListSerializer, OptionSerializer, CardSerializer, DealSerializer
 from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 
@@ -30,6 +33,35 @@ class ClientViewSet(viewsets.ModelViewSet):
 class ListViewSet(viewsets.ModelViewSet):
     queryset = List.objects.all()
     serializer_class = ListSerializer
+
+    @action(detail=True, methods=['delete'], url_path='clear-options')
+    def clear_options(self, request, pk=None):
+        try:
+            list_obj = self.get_object()
+            options_deleted, _ = Option.objects.filter(list=list_obj).delete()
+            return Response({"message": f"{options_deleted} options deleted."}, status=status.HTTP_204_NO_CONTENT)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PublicListViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = ListSerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        uuid = self.kwargs.get('uuid')
+        if uuid:
+            queryset = List.objects.filter(uuid=uuid)
+            if not queryset.exists():
+                raise List('Object with this UUID not found.')
+            return queryset
+        return List.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        obj = queryset.first()
+        serializer = self.get_serializer(obj)
+        return Response(serializer.data)
 
 
 class OptionViewSet(viewsets.ModelViewSet):

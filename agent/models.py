@@ -30,7 +30,7 @@ class List(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lists')
     client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True, related_name='lists')
-    link_url = models.CharField(blank=True, null=True, max_length=255)
+    uuid = models.CharField(blank=True, null=True, max_length=255)
 
     def __str__(self):
         return str(self.client) + " List # " + str(self.id)

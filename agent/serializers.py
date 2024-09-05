@@ -55,31 +55,41 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ListSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField()
-    full_name = serializers.SerializerMethodField()
+    client_name = serializers.SerializerMethodField()
+    agent_name = serializers.SerializerMethodField()
 
     class Meta:
         model = List
         fields = (
             'id',
             'date',
+            'uuid',
             'agent',
+            'agent_name',
             'client',
+            'client_name',
             'options',
-            'full_name',
-            'link_url'
         )
 
     def get_options(self, obj):
         return OptionSerializer(obj.options.all(), many=True).data
 
-    def get_full_name(self, obj):
+    def get_client_name(self, obj):
         if obj.client:
             return f"{obj.client.first_name} {obj.client.last_name}"
+        return None
+
+    def get_agent_name(self, obj):
+        if obj.client:
+            return f"{obj.agent.first_name} {obj.agent.last_name}"
         return None
 
 
 class OptionSerializer(serializers.ModelSerializer):
     prop_name = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
+    latitude = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
 
     class Meta:
         model = Option
@@ -87,6 +97,9 @@ class OptionSerializer(serializers.ModelSerializer):
             'id',
             'property',
             'prop_name',
+            'longitude',
+            'latitude',
+            'address',
             'price',
             'unit_number',
             'layout',
@@ -98,6 +111,15 @@ class OptionSerializer(serializers.ModelSerializer):
 
     def get_prop_name(self, obj):
         return obj.property.name
+
+    def get_longitude(self, obj):
+        return obj.property.longitude
+
+    def get_latitude(self, obj):
+        return obj.property.latitude
+
+    def get_address(self, obj):
+        return obj.property.address
 
 
 class DealSerializer(serializers.ModelSerializer):
