@@ -90,6 +90,7 @@ class OptionSerializer(serializers.ModelSerializer):
     longitude = serializers.SerializerMethodField()
     latitude = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
+    website = serializers.SerializerMethodField()
 
     class Meta:
         model = Option
@@ -100,6 +101,7 @@ class OptionSerializer(serializers.ModelSerializer):
             'longitude',
             'latitude',
             'address',
+            'website',
             'price',
             'unit_number',
             'layout',
@@ -120,6 +122,9 @@ class OptionSerializer(serializers.ModelSerializer):
 
     def get_address(self, obj):
         return obj.property.address
+
+    def get_website(self, obj):
+        return obj.property.website
 
 
 class DealSerializer(serializers.ModelSerializer):
