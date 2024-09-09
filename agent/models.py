@@ -52,7 +52,7 @@ class Deal(models.Model):
     rent = models.IntegerField()
     rate = models.IntegerField()
     commission = models.DecimalField(max_digits=10, decimal_places=2)
-    flat_fee = models.DecimalField(max_digits=10, decimal_places=2)
+    flat_fee = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     move_date = models.DateField()
     unit_no = models.CharField(max_length=255)
     lease_term = models.CharField(max_length=255)

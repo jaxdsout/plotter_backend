@@ -36,6 +36,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 class ClientSerializer(serializers.ModelSerializer):
     lists = serializers.SerializerMethodField()
+    deals = serializers.SerializerMethodField()
 
     class Meta:
         model = Client
@@ -46,11 +47,15 @@ class ClientSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'phone_number',
-            'lists'
+            'lists',
+            'deals'
         )
 
     def get_lists(self, obj):
         return ListSerializer(obj.lists.all(), many=True).data
+
+    def get_deals(self, obj):
+        return DealSerializer(obj.deals.all(), many=True).data
 
 
 class ListSerializer(serializers.ModelSerializer):
@@ -128,11 +133,13 @@ class OptionSerializer(serializers.ModelSerializer):
 
 
 class DealSerializer(serializers.ModelSerializer):
+    prop_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Deal
         fields = (
             'property',
+            'prop_name',
             'unit_no',
             'move_date',
             'lease_term',
@@ -143,6 +150,9 @@ class DealSerializer(serializers.ModelSerializer):
             'agent',
             'client'
         )
+
+    def get_prop_name(self, obj):
+        return obj.property.name
 
 
 class CardSerializer(serializers.ModelSerializer):
