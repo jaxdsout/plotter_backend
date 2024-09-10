@@ -50,7 +50,7 @@ class Option(models.Model):
 class Deal(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     rent = models.IntegerField()
-    rate = models.IntegerField()
+    rate = models.IntegerField(blank=True, null=True)
     commission = models.DecimalField(max_digits=10, decimal_places=2)
     flat_fee = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     move_date = models.DateField()

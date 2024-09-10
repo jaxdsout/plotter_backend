@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from agent.views import ProfileViewSet, ClientViewSet, ListViewSet, OptionViewSet, CardViewSet, DealViewSet, PublicListViewSet
+from agent.views import (ProfileViewSet, ClientViewSet, ListViewSet, OptionViewSet, CardViewSet, DealViewSet,
+                         PublicListViewSet)
 from property.views import PropertyViewSet
 
 router = DefaultRouter()
@@ -20,7 +21,6 @@ urlpatterns = [
     path('auth/', include('user.urls')),
     path('', include(router.urls)),
     path('client-list/<uuid:uuid>/', PublicListViewSet.as_view({'get': 'retrieve'}), name='public-list-detail'),
-
 ]
 
 urlpatterns += router.urls

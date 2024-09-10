@@ -145,8 +145,8 @@ class DealSerializer(serializers.ModelSerializer):
             'lease_term',
             'rent',
             'rate',
-            'commission',
             'flat_fee',
+            'commission',
             'agent',
             'client'
         )
