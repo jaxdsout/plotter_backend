@@ -22,16 +22,18 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = (
             'id',
-            'trec',
             'user',
+            'trec',
             'website',
-            'avatar',
             'phone_number',
+            'avatar',
             'first_name',
             'full_name',
             'email'
-
         )
+        extra_kwargs = {
+            'avatar': {'required': False}
+        }
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -173,5 +175,7 @@ class CardSerializer(serializers.ModelSerializer):
         fields = (
             'property',
             'agent',
-            'client'
+            'client',
+            'interested',
+            'move_by'
         )

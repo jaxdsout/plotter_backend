@@ -3,7 +3,8 @@ from django.conf import settings
 from property.models import Property
 from user.models import User
 from datetime import timedelta
-
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 
 class Profile(models.Model):
@@ -85,7 +86,12 @@ class Deal(models.Model):
 
 
 class Card(models.Model):
+    date = models.DateTimeField(auto_now_add=True)
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='cards')
     agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards')
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='cards')
+    interested = models.CharField(max_length=255)
+    move_by = models.CharField(max_length=255)
+
+
 
