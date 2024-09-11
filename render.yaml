@@ -7,7 +7,7 @@ databases:
 services:
   - type: web
     plan: free
-    name: warehouse
+    name: plotter
     runtime: python
     buildCommand: "./build.sh"
     startCommand: "python -m gunicorn plotter.asgi:application -k uvicorn.workers.UvicornWorker"
