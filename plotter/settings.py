@@ -133,7 +133,7 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'user.User'
 
-DOMAIN = 'https://jaxdsout.github.io/plotter'
+DOMAIN = 'https://plotter-w3vt.onrender.com/#'
 SITE_NAME = 'Plotter'
 
 DJOSER = {
