@@ -8,7 +8,8 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
-
+from datetime import timedelta
+from django.utils import timezone
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
@@ -77,6 +78,24 @@ class DealViewSet(viewsets.ModelViewSet):
         if agent:
             queryset = queryset.filter(agent=agent)
         return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(status='not')
+
+    def perform_update(self, serializer):
+        instance = serializer.instance
+        status = self.request.data.get('status', instance.status)
+
+        if status == 'pend':
+            serializer.save(status='pend')
+            serializer.save(invoice_date=timezone.now().date())
+            sixty = instance.move_date + timedelta(days=60)
+            serializer.save(overdue_date=sixty)
+
+        if status == 'paid':
+            serializer.save(status='paid')
+
+
 
 
 class CardViewSet(viewsets.ModelViewSet):

@@ -19,3 +19,4 @@ def save_user_profile(sender, instance, **kwargs):
 @receiver(user_activated)
 def create_profile_on_activation(sender, user, request, **kwargs):
     Profile.objects.get_or_create(user=user)
+

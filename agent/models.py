@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from property.models import Property
 from user.models import User
+from datetime import timedelta
+
 
 
 class Profile(models.Model):
@@ -48,16 +50,38 @@ class Option(models.Model):
 
 
 class Deal(models.Model):
+    STATUS = [
+        ('not', 'Not Invoiced',),
+        ('pend', 'Pending'),
+        ('over', 'Overdue'),
+        ('paid', 'Paid')
+    ]
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     rent = models.IntegerField()
     rate = models.IntegerField(blank=True, null=True)
     commission = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=25, choices=STATUS, default='not')
     flat_fee = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     move_date = models.DateField()
     unit_no = models.CharField(max_length=255)
     lease_term = models.CharField(max_length=255)
     agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='deals')
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='deals')
+    deal_date = models.DateField(auto_now_add=True)
+    invoice_date = models.DateField(blank=True, null=True)
+    overdue_date = models.DateField(blank=True, null=True)
+    lease_end_date = models.DateField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.move_date and self.lease_term:
+            try:
+                lease_term_months = int(self.lease_term)
+                lease_end_date = self.move_date + timedelta(days=lease_term_months * 30)
+                self.lease_end_date = lease_end_date
+            except ValueError:
+                pass
+
+        super().save(*args, **kwargs)
 
 
 class Card(models.Model):

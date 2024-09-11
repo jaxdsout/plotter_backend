@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'djoser',
     'storages',
     'whitenoise',
-    'django_filters'
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -176,3 +176,4 @@ STORAGES = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+

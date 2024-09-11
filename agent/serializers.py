@@ -134,10 +134,12 @@ class OptionSerializer(serializers.ModelSerializer):
 
 class DealSerializer(serializers.ModelSerializer):
     prop_name = serializers.SerializerMethodField()
+    client_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Deal
         fields = (
+            'id',
             'property',
             'prop_name',
             'unit_no',
@@ -148,11 +150,20 @@ class DealSerializer(serializers.ModelSerializer):
             'flat_fee',
             'commission',
             'agent',
-            'client'
+            'client',
+            'client_name',
+            'status',
+            'deal_date',
+            'invoice_date',
+            'overdue_date',
+            'lease_end_date'
         )
 
     def get_prop_name(self, obj):
         return obj.property.name
+
+    def get_client_name(self, obj):
+        return obj.client.first_name + " " + obj.client.last_name
 
 
 class CardSerializer(serializers.ModelSerializer):
