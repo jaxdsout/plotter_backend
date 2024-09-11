@@ -10,11 +10,11 @@ services:
     name: warehouse
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "python -m gunicorn warehouse.asgi:application -k uvicorn.workers.UvicornWorker"
+    startCommand: "python -m gunicorn plotter.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: warehouse
+          name: plotter
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
