@@ -15,6 +15,10 @@ ALLOWED_HOSTS = ['plotter-qxkl.onrender.com', 'localhost', '127.0.0.1']
 
 DEBUG = os.getenv('DEBUG')
 
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -133,7 +137,7 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'user.User'
 
-DOMAIN = 'https://plotter-w3vt.onrender.com/#'
+DOMAIN = 'https://plotter-w3vt.onrender.com'
 SITE_NAME = 'Plotter'
 
 DJOSER = {
@@ -144,9 +148,9 @@ DJOSER = {
     'SEND_CONFIRMATION_EMAIL': True,
     'SET_USERNAME_RETYPE': True,
     'SET_PASSWORD_RETYPE': True,
-    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': 'verify/{user.id}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/email/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/verify/{user.id}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SERIALIZERS': {
         'user_create': 'user.serializers.UserCreateSerializer',
