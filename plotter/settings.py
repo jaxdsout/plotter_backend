@@ -11,11 +11,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = ['plotter-lmvk.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['plotter-exav.onrender.com', 'localhost', '127.0.0.1']
 
 DEBUG = os.getenv('DEBUG')
-
-ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,6 +27,7 @@ INSTALLED_APPS = [
     'user',
     'property',
     'agent',
+    'gunicorn',
     'corsheaders',
     'djoser',
     'storages',
