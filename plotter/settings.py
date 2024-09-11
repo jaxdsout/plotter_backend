@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = ['plotter-qxkl.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['plotter-qxkl.onrender.com', 'plotter-w3vt.onrender.com', 'localhost', '127.0.0.1']
 
 DEBUG = os.getenv('DEBUG')
 
