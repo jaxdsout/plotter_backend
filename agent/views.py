@@ -35,10 +35,12 @@ class ClientViewSet(viewsets.ModelViewSet):
 
 
 
-
 class ListViewSet(viewsets.ModelViewSet):
     queryset = List.objects.all()
     serializer_class = ListSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['agent']
+    search_fields = ['agent', 'client']
 
     @action(detail=True, methods=['delete'], url_path='clear-options')
     def clear_options(self, request, pk=None):
