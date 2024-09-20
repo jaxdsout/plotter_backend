@@ -98,6 +98,7 @@ class OptionSerializer(serializers.ModelSerializer):
     latitude = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
     website = serializers.SerializerMethodField()
+    prop_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Option
@@ -105,6 +106,7 @@ class OptionSerializer(serializers.ModelSerializer):
             'id',
             'property',
             'prop_name',
+            'prop_image',
             'longitude',
             'latitude',
             'address',
@@ -132,6 +134,9 @@ class OptionSerializer(serializers.ModelSerializer):
 
     def get_website(self, obj):
         return obj.property.website
+
+    def get_prop_image(self, obj):
+        return obj.property.image
 
 
 class DealSerializer(serializers.ModelSerializer):
