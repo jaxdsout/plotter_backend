@@ -33,6 +33,12 @@ class ClientViewSet(viewsets.ModelViewSet):
     filterset_fields = ['agent']
     search_fields = ['first_name', 'last_name']
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        agent = self.request.query_params.get('agent')
+        if agent:
+            queryset = queryset.filter(agent=agent)
+        return queryset
 
 
 class ListViewSet(viewsets.ModelViewSet):
@@ -41,6 +47,13 @@ class ListViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['agent']
     search_fields = ['agent', 'client']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        agent = self.request.query_params.get('agent')
+        if agent:
+            queryset = queryset.filter(agent=agent)
+        return queryset
 
     @action(detail=True, methods=['delete'], url_path='clear-options')
     def clear_options(self, request, pk=None):
