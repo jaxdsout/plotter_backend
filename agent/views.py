@@ -51,6 +51,10 @@ class ListViewSet(viewsets.ModelViewSet):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class OptionViewSet(viewsets.ModelViewSet):
+    queryset = Option.objects.all()
+    serializer_class = OptionSerializer
+
 class PublicListViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ListSerializer
     permission_classes = [AllowAny]
@@ -69,11 +73,6 @@ class PublicListViewSet(viewsets.ReadOnlyModelViewSet):
         obj = queryset.first()
         serializer = self.get_serializer(obj)
         return Response(serializer.data)
-
-
-class OptionViewSet(viewsets.ModelViewSet):
-    queryset = Option.objects.all()
-    serializer_class = OptionSerializer
 
 
 class DealViewSet(viewsets.ModelViewSet):

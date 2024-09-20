@@ -10,13 +10,13 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
     def get_full_name(self, obj):
-        return obj.user.get_full_name()
+        return obj.user.get_full_name() if obj.user else None
 
     def get_first_name(self, obj):
-        return obj.user.first_name
+        return obj.user.first_name if obj.user else None
 
     def get_email(self, obj):
-        return obj.user.email
+        return obj.user.email if obj.user else None
 
     class Meta:
         model = Profile
@@ -121,22 +121,22 @@ class OptionSerializer(serializers.ModelSerializer):
         )
 
     def get_prop_name(self, obj):
-        return obj.property.name
+        return obj.property.name if obj.property else None
 
     def get_longitude(self, obj):
-        return obj.property.longitude
+        return obj.property.longitude if obj.property else None
 
     def get_latitude(self, obj):
-        return obj.property.latitude
+        return obj.property.latitude if obj.property else None
 
     def get_address(self, obj):
-        return obj.property.address
+        return obj.property.address if obj.property else None
 
     def get_website(self, obj):
-        return obj.property.website
+        return obj.property.website if obj.property else None
 
     def get_prop_image(self, obj):
-        return obj.property.image
+        return obj.property.image if obj.property else None
 
 
 class DealSerializer(serializers.ModelSerializer):
@@ -167,10 +167,10 @@ class DealSerializer(serializers.ModelSerializer):
         )
 
     def get_prop_name(self, obj):
-        return obj.property.name
+        return obj.property.name if obj.property else None
 
     def get_client_name(self, obj):
-        return obj.client.first_name + " " + obj.client.last_name
+        return obj.client.first_name + " " + obj.client.last_name if obj.property else None
 
 
 class CardSerializer(serializers.ModelSerializer):
