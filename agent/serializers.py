@@ -170,7 +170,7 @@ class DealSerializer(serializers.ModelSerializer):
         return obj.property.name if obj.property else None
 
     def get_client_name(self, obj):
-        return obj.client.first_name + " " + obj.client.last_name if obj.property else None
+        return f"{obj.client.first_name} {obj.client.last_name}" if obj.client else None
 
 
 class CardSerializer(serializers.ModelSerializer):

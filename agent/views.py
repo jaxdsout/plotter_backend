@@ -27,7 +27,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         serializer.save()
 
 class ClientViewSet(viewsets.ModelViewSet):
-    queryset = Client.objects.all()
+    queryset = Client.objects.select_related('agent').prefetch_related('lists', 'deals')
     serializer_class = ClientSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['agent']
@@ -35,7 +35,7 @@ class ClientViewSet(viewsets.ModelViewSet):
 
 
 class ListViewSet(viewsets.ModelViewSet):
-    queryset = List.objects.all()
+    queryset = List.objects.select_related('agent', 'client').prefetch_related('options')
     serializer_class = ListSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['agent']
@@ -46,7 +46,11 @@ class ListViewSet(viewsets.ModelViewSet):
         try:
             list_obj = self.get_object()
             options_deleted, _ = Option.objects.filter(list=list_obj).delete()
+            if options_deleted == 0:
+                return Response({"message": "No options to delete."}, status=status.HTTP_204_NO_CONTENT)
             return Response({"message": f"{options_deleted} options deleted."}, status=status.HTTP_204_NO_CONTENT)
+        except List.DoesNotExist:
+            return Response({"error": "List not found."}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
