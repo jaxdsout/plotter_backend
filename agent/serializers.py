@@ -39,8 +39,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    lists = serializers.SerializerMethodField()
-    deals = serializers.SerializerMethodField()
+    # lists = serializers.SerializerMethodField()
+    # deals = serializers.SerializerMethodField()
 
     class Meta:
         model = Client
@@ -55,17 +55,17 @@ class ClientSerializer(serializers.ModelSerializer):
             'deals'
         )
 
-    @staticmethod
-    def get_lists(self, obj):
-        return ListSerializer(obj.lists.filter(client=obj), many=True).data
-
-    @staticmethod
-    def get_deals(self, obj):
-        return DealSerializer(obj.deals.filter(client=obj), many=True).data
+    # @staticmethod
+    # def get_lists(self, obj):
+    #     return ListSerializer(obj.lists.filter(client=obj), many=True).data
+    #
+    # @staticmethod
+    # def get_deals(self, obj):
+    #     return DealSerializer(obj.deals.filter(client=obj), many=True).data
 
 
 class ListSerializer(serializers.ModelSerializer):
-    options = serializers.SerializerMethodField()
+    # options = serializers.SerializerMethodField()
     client_name = serializers.SerializerMethodField()
     agent_name = serializers.SerializerMethodField()
 
@@ -82,8 +82,8 @@ class ListSerializer(serializers.ModelSerializer):
             'options',
         )
 
-    def get_options(self, obj):
-        return OptionSerializer(obj.options.filter(list=obj), many=True).data
+    # def get_options(self, obj):
+    #     return OptionSerializer(obj.options.filter(list=obj), many=True).data
 
     def get_client_name(self, obj):
         if obj.client:
