@@ -8,6 +8,5 @@ urlpatterns = [
     # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('', include('djoser.urls.jwt')),
     path('users/<int:pk>/delete/', UserDeleteView.as_view(), name='custom_user_delete'),
-
 ]
 
