@@ -94,6 +94,7 @@ class ListSerializer(serializers.ModelSerializer):
 
 class OptionSerializer(serializers.ModelSerializer):
     prop_name = serializers.SerializerMethodField()
+    prop_image = serializers.SerializerMethodField()
     longitude = serializers.SerializerMethodField()
     latitude = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
@@ -105,6 +106,7 @@ class OptionSerializer(serializers.ModelSerializer):
             'id',
             'property',
             'prop_name',
+            'prop_image',
             'longitude',
             'latitude',
             'address',
@@ -120,6 +122,11 @@ class OptionSerializer(serializers.ModelSerializer):
 
     def get_prop_name(self, obj):
         return obj.property.name
+
+    def get_prop_image(self, obj):
+        if obj.property.image:
+            return obj.property.image.url
+        return None
 
     def get_longitude(self, obj):
         return obj.property.longitude

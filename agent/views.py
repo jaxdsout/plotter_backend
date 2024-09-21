@@ -12,6 +12,7 @@ from datetime import timedelta
 from django.utils import timezone
 from .emails import send_guest_card_email
 
+
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -26,19 +27,20 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save()
 
+
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['agent']
     search_fields = ['first_name', 'last_name']
-
-
 
 
 class ListViewSet(viewsets.ModelViewSet):
     queryset = List.objects.all()
     serializer_class = ListSerializer
+    filter_backends = [DjangoFilterBackend, ]
+    filterset_fields = ['agent']
 
     @action(detail=True, methods=['delete'], url_path='clear-options')
     def clear_options(self, request, pk=None):
@@ -73,21 +75,15 @@ class PublicListViewSet(viewsets.ReadOnlyModelViewSet):
 class OptionViewSet(viewsets.ModelViewSet):
     queryset = Option.objects.all()
     serializer_class = OptionSerializer
+    filter_backends = [DjangoFilterBackend,]
+    filterset_fields = ['list']
 
 
 class DealViewSet(viewsets.ModelViewSet):
     queryset = Deal.objects.all()
     serializer_class = DealSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend,]
     filterset_fields = ['agent']
-    search_fields = ['agent', 'client']
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        agent = self.request.query_params.get('agent')
-        if agent:
-            queryset = queryset.filter(agent=agent)
-        return queryset
 
     def perform_create(self, serializer):
         serializer.save(status='not')
@@ -104,8 +100,6 @@ class DealViewSet(viewsets.ModelViewSet):
 
         if status == 'paid':
             serializer.save(status='paid')
-
-
 
 
 class CardViewSet(viewsets.ModelViewSet):
