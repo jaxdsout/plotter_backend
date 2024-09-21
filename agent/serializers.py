@@ -8,13 +8,15 @@ class ProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.SerializerMethodField()
     email = serializers.SerializerMethodField()
 
-
+    @staticmethod
     def get_full_name(self, obj):
         return obj.user.get_full_name() if obj.user else None
 
+    @staticmethod
     def get_first_name(self, obj):
         return obj.user.first_name if obj.user else None
 
+    @staticmethod
     def get_email(self, obj):
         return obj.user.email if obj.user else None
 
@@ -37,8 +39,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    # lists = serializers.SerializerMethodField()
-    # deals = serializers.SerializerMethodField()
+    lists = serializers.SerializerMethodField()
+    deals = serializers.SerializerMethodField()
 
     class Meta:
         model = Client
@@ -49,15 +51,17 @@ class ClientSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'phone_number',
-            # 'lists',
-            # 'deals'
+            'lists',
+            'deals'
         )
 
-    # def get_lists(self, obj):
-    #     return ListSerializer(obj.lists.all(), many=True).data
-    #
-    # def get_deals(self, obj):
-    #     return DealSerializer(obj.deals.all(), many=True).data
+    @staticmethod
+    def get_lists(self, obj):
+        return ListSerializer(obj.lists.filter(client=obj), many=True).data
+
+    @staticmethod
+    def get_deals(self, obj):
+        return DealSerializer(obj.deals.filter(client=obj), many=True).data
 
 
 class ListSerializer(serializers.ModelSerializer):
@@ -79,7 +83,7 @@ class ListSerializer(serializers.ModelSerializer):
         )
 
     def get_options(self, obj):
-        return OptionSerializer(obj.options.all(list=list), many=True).data
+        return OptionSerializer(obj.options.filter(list=obj), many=True).data
 
     def get_client_name(self, obj):
         if obj.client:
