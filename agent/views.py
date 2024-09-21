@@ -43,6 +43,7 @@ class ListViewSet(viewsets.ModelViewSet):
     filterset_fields = ['agent']
     search_fields = ['agent', 'client']
 
+
     @action(detail=True, methods=['delete'], url_path='clear-options')
     def clear_options(self, request, pk=None):
         try:

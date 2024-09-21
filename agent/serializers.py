@@ -37,8 +37,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    lists = serializers.SerializerMethodField()
-    deals = serializers.SerializerMethodField()
+    # lists = serializers.SerializerMethodField()
+    # deals = serializers.SerializerMethodField()
 
     class Meta:
         model = Client
@@ -49,15 +49,15 @@ class ClientSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'phone_number',
-            'lists',
-            'deals'
+            # 'lists',
+            # 'deals'
         )
 
-    def get_lists(self, obj):
-        return ListSerializer(obj.lists.all(), many=True).data
-
-    def get_deals(self, obj):
-        return DealSerializer(obj.deals.all(), many=True).data
+    # def get_lists(self, obj):
+    #     return ListSerializer(obj.lists.all(), many=True).data
+    #
+    # def get_deals(self, obj):
+    #     return DealSerializer(obj.deals.all(), many=True).data
 
 
 class ListSerializer(serializers.ModelSerializer):
@@ -79,7 +79,7 @@ class ListSerializer(serializers.ModelSerializer):
         )
 
     def get_options(self, obj):
-        return OptionSerializer(obj.options.all(), many=True).data
+        return OptionSerializer(obj.options.all(list=list), many=True).data
 
     def get_client_name(self, obj):
         if obj.client:
@@ -94,11 +94,11 @@ class ListSerializer(serializers.ModelSerializer):
 
 class OptionSerializer(serializers.ModelSerializer):
     prop_name = serializers.SerializerMethodField()
+    prop_image = serializers.SerializerMethodField()
     longitude = serializers.SerializerMethodField()
     latitude = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
     website = serializers.SerializerMethodField()
-    prop_image = serializers.SerializerMethodField()
 
     class Meta:
         model = Option
@@ -123,6 +123,9 @@ class OptionSerializer(serializers.ModelSerializer):
     def get_prop_name(self, obj):
         return obj.property.name if obj.property else None
 
+    def get_prop_image(self, obj):
+        return obj.property.image if obj.property else None
+
     def get_longitude(self, obj):
         return obj.property.longitude if obj.property else None
 
@@ -134,9 +137,6 @@ class OptionSerializer(serializers.ModelSerializer):
 
     def get_website(self, obj):
         return obj.property.website if obj.property else None
-
-    def get_prop_image(self, obj):
-        return obj.property.image if obj.property else None
 
 
 class DealSerializer(serializers.ModelSerializer):
