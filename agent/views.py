@@ -12,6 +12,7 @@ from datetime import timedelta
 from django.utils import timezone
 from .emails import send_guest_card_email
 
+
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -26,8 +27,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save()
 
+
 class ClientViewSet(viewsets.ModelViewSet):
-    queryset = Client.objects.select_related('agent').prefetch_related('lists', 'deals')
+    queryset = Client.objects.all()
     serializer_class = ClientSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['agent']
@@ -35,7 +37,7 @@ class ClientViewSet(viewsets.ModelViewSet):
 
 
 class ListViewSet(viewsets.ModelViewSet):
-    queryset = List.objects.select_related('agent', 'client').prefetch_related('options')
+    queryset = List.objects.all()
     serializer_class = ListSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['agent']
@@ -46,18 +48,10 @@ class ListViewSet(viewsets.ModelViewSet):
         try:
             list_obj = self.get_object()
             options_deleted, _ = Option.objects.filter(list=list_obj).delete()
-            if options_deleted == 0:
-                return Response({"message": "No options to delete."}, status=status.HTTP_204_NO_CONTENT)
             return Response({"message": f"{options_deleted} options deleted."}, status=status.HTTP_204_NO_CONTENT)
-        except List.DoesNotExist:
-            return Response({"error": "List not found."}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-
-class OptionViewSet(viewsets.ModelViewSet):
-    queryset = Option.objects.all()
-    serializer_class = OptionSerializer
 
 class PublicListViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ListSerializer
@@ -79,13 +73,17 @@ class PublicListViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
+class OptionViewSet(viewsets.ModelViewSet):
+    queryset = Option.objects.all()
+    serializer_class = OptionSerializer
+
+
 class DealViewSet(viewsets.ModelViewSet):
     queryset = Deal.objects.all()
     serializer_class = DealSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['agent']
     search_fields = ['agent', 'client']
-
 
     def perform_create(self, serializer):
         serializer.save(status='not')
@@ -102,8 +100,6 @@ class DealViewSet(viewsets.ModelViewSet):
 
         if status == 'paid':
             serializer.save(status='paid')
-
-
 
 
 class CardViewSet(viewsets.ModelViewSet):
