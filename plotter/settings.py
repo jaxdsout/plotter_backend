@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-ALLOWED_HOSTS = ['plotter-qxkl.onrender.com', 'plotter-w3vt.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['plotter-qxkl.onrender.com', 'plotter-w3vt.onrender.com', 'aptatlas.com', 'localhost', '127.0.0.1']
 
 DEBUG = os.getenv('DEBUG')
 
@@ -110,8 +110,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST = 'smtp.hostinger.com'
+EMAIL_PORT = 465
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
@@ -137,8 +137,8 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'user.User'
 
-DOMAIN = 'plotter-w3vt.onrender.com'
-SITE_NAME = 'Plotter'
+DOMAIN = 'aptatlas.com'
+SITE_NAME = 'Atlas | Apartment Locator Tool'
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
