@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from agent.views import (ProfileViewSet, ClientViewSet, ListViewSet, OptionViewSet, CardViewSet, DealViewSet,
                          PublicListViewSet)
 from property.views import PropertyViewSet
+from user.views import UserDeleteView
 
 router = DefaultRouter()
 router.register(r'profiles', ProfileViewSet, basename='profiles')
@@ -18,8 +19,10 @@ router.register(r'cards', CardViewSet, basename='cards')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('auth/', include('user.urls')),
     path('', include(router.urls)),
+    path('', include('djoser.urls')),
+    path('', include('djoser.urls.jwt')),
+    path('users/<int:pk>/delete/', UserDeleteView.as_view(), name='custom_user_delete'),
     path('client-list/<uuid:uuid>/', PublicListViewSet.as_view({'get': 'retrieve'}), name='public-list-detail'),
 ]
 
