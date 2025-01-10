@@ -9,7 +9,12 @@ def seed_test_account(user):
     Deal.objects.filter(agent=user).delete()
     Card.objects.filter(agent=user).delete()
 
-    properties = Property.objects.all()[:3]
+    try:
+        property1 = Property.objects.get(id=2)
+        property2 = Property.objects.get(id=26)
+        property3 = Property.objects.get(id=30)
+    except Property.DoesNotExist:
+        raise Exception("One or more properties do not exist.")
 
     clients = [
         {"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "phone_number": "1234567890"},
@@ -53,7 +58,7 @@ def seed_test_account(user):
 
     deals = [
         {
-            "property": properties[0],
+            "property": property1,
             "rent": 2000,
             "rate": 100,
             "commission": 2000.00,
@@ -69,7 +74,7 @@ def seed_test_account(user):
             "lease_end_date": date.today() + timedelta(days=290),
         },
         {
-            "property": properties[1],
+            "property": property2,
             "rent": 1650,
             "rate": 50,
             "commission": 825.00,
@@ -85,7 +90,7 @@ def seed_test_account(user):
             "lease_end_date": date.today() + timedelta(days=360),
         },
         {
-            "property": properties[2],
+            "property": property3,
             "rent": 1800,
             "rate": 150,
             "commission": 2700.00,
