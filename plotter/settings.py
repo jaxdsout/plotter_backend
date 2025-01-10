@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'storages',
     'whitenoise',
     'django_filters',
+    'task'
 ]
 
 MIDDLEWARE = [

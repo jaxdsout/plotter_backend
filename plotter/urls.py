@@ -6,6 +6,7 @@ from agent.views import (ProfileViewSet, ClientViewSet, ListViewSet, OptionViewS
                          PublicListViewSet)
 from property.views import PropertyViewSet
 from user.views import UserDeleteView
+from task.views import TaskViewSet
 
 router = DefaultRouter()
 router.register(r'profiles', ProfileViewSet, basename='profiles')
@@ -15,6 +16,8 @@ router.register(r'options', OptionViewSet, basename='options')
 router.register(r'properties', PropertyViewSet, basename='properties')
 router.register(r'deals', DealViewSet, basename='deals')
 router.register(r'cards', CardViewSet, basename='cards')
+router.register(r'tasks', TaskViewSet, basename='tasks')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
