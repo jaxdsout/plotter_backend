@@ -9,12 +9,7 @@ def seed_test_account(user):
     Deal.objects.filter(agent=user).delete()
     Card.objects.filter(agent=user).delete()
 
-    try:
-        property1 = Property.objects.get(id=2)
-        property2 = Property.objects.get(id=26)
-        property3 = Property.objects.get(id=30)
-    except Property.DoesNotExist:
-        raise Exception("One or more properties do not exist.")
+    properties = Property.objects.all()[:3]
 
     clients = [
         {"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "phone_number": "1234567890"},
@@ -35,30 +30,44 @@ def seed_test_account(user):
     list_instances = [List.objects.create(agent=user, **list_data) for list_data in lists]
 
     options = [
-        {"property_id": 1, "price": 1200.00, "unit_number": "A1", "layout": "1 Bed", "sq_ft": "750",
-         "available": "2025-02-01", "notes": "Pool view", "list": list_instances[0]},
-        {"property_id": 2, "price": 1500.00, "unit_number": "B2", "layout": "2 Bed", "sq_ft": "1100",
-         "available": "2025-02-10", "notes": "Close to parking", "list": list_instances[0]},
-        {"property_id": 3, "price": 900.00, "unit_number": "C3", "layout": "Studio", "sq_ft": "500",
-         "available": "2025-01-20", "notes": "Special offer", "list": list_instances[0]},
-        {"property_id": 1, "price": 1300.00, "unit_number": "D4", "layout": "1 Bed", "sq_ft": "800",
-         "available": "2025-03-01", "notes": None, "list": list_instances[1]},
-        {"property_id": 2, "price": 1400.00, "unit_number": "E5", "layout": "1 Bed", "sq_ft": "750",
-         "available": "2025-01-30", "notes": "Newly renovated", "list": list_instances[1]},
-        {"property_id": 3, "price": 2000.00, "unit_number": "F6", "layout": "3 Bed", "sq_ft": "1500",
-         "available": "2025-02-15", "notes": "Top floor", "list": list_instances[2]},
-        {"property_id": 1, "price": 1100.00, "unit_number": "G7", "layout": "Studio", "sq_ft": "600",
-         "available": "2025-02-20", "notes": "Discount available", "list": list_instances[3]},
-        {"property_id": 2, "price": 1700.00, "unit_number": "H8", "layout": "2 Bed", "sq_ft": "1000",
-         "available": "2025-02-05", "notes": "Pet friendly", "list": list_instances[4]},
+        {"property_id": 4, "list": list_instances[0], "price": 1200.00, "unit_number": "A1", "layout": "1 Bed", "sq_ft":"750",
+         "available": "2025-02-01", "notes": "Pool view",},
+        {"property_id": 22, "list": list_instances[0]},
+        {"property_id": 12, "list": list_instances[0]},
+        {"property_id": 9, "list": list_instances[1]},
+        {"property_id": 5, "list": list_instances[1]},
+        {"property_id": 14, "list": list_instances[2]},
+        {"property_id": 29, "list": list_instances[3]},
+        {"property_id": 30, "list": list_instances[4]},
     ]
 
     for option_data in options:
         Option.objects.create(**option_data)
 
+
+    # options_details = [
+    #     {"option": option_instances[0], "price": 1200.00, "unit_number": "A1", "layout": "1 Bed", "sq_ft": "750",
+    #      "available": "2025-02-01", "notes": "Pool view", "property": properties[0], "list": list_instances[0]},
+    #     {"price": 1500.00, "unit_number": "B2", "layout": "2 Bed", "sq_ft": "1100",
+    #      "available": "2025-02-10", "notes": "Close to parking"},
+    #     {"price": 900.00, "unit_number": "C3", "layout": "Studio", "sq_ft": "500",
+    #      "available": "2025-01-20", "notes": "Special offer"},
+    #     {"price": 1300.00, "unit_number": "D4", "layout": "1 Bed", "sq_ft": "800",
+    #      "available": "2025-03-01", "notes": None},
+    #     {"price": 1400.00, "unit_number": "E5", "layout": "1 Bed", "sq_ft": "750",
+    #      "available": "2025-01-30", "notes": "Newly renovated"},
+    #     {"price": 2000.00, "unit_number": "F6", "layout": "3 Bed", "sq_ft": "1500",
+    #      "available": "2025-02-15", "notes": "Top floor"},
+    #     {"price": 1100.00, "unit_number": "G7", "layout": "Studio", "sq_ft": "600",
+    #      "available": "2025-02-20", "notes": "Discount available"},
+    #     {"price": 1700.00, "unit_number": "H8", "layout": "2 Bed", "sq_ft": "1000",
+    #      "available": "2025-02-05", "notes": "Pet friendly", }
+    # ]
+
+
     deals = [
         {
-            "property": property1,
+            "property_id": 4,
             "rent": 2000,
             "rate": 100,
             "commission": 2000.00,
@@ -74,7 +83,7 @@ def seed_test_account(user):
             "lease_end_date": date.today() + timedelta(days=290),
         },
         {
-            "property": property2,
+            "property_id": 30,
             "rent": 1650,
             "rate": 50,
             "commission": 825.00,
@@ -90,7 +99,7 @@ def seed_test_account(user):
             "lease_end_date": date.today() + timedelta(days=360),
         },
         {
-            "property": property3,
+            "property_id": 9,
             "rent": 1800,
             "rate": 150,
             "commission": 2700.00,
