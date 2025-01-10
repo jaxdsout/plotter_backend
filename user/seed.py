@@ -1,5 +1,6 @@
 from agent.models import Client, List, Option, Deal, Card
 from property.models import Property
+from task.models import Task
 from datetime import date, timedelta
 
 
@@ -31,39 +32,25 @@ def seed_test_account(user):
 
     options = [
         {"property_id": 4, "list": list_instances[0], "price": 1200.00, "unit_number": "A1", "layout": "1 Bed", "sq_ft":"750",
-         "available": "2025-02-01", "notes": "Pool view",},
-        {"property_id": 22, "list": list_instances[0]},
-        {"property_id": 12, "list": list_instances[0]},
-        {"property_id": 9, "list": list_instances[1]},
-        {"property_id": 5, "list": list_instances[1]},
-        {"property_id": 14, "list": list_instances[2]},
-        {"property_id": 29, "list": list_instances[3]},
-        {"property_id": 30, "list": list_instances[4]},
+         "available": "2025-02-01", "notes": "Pool view"},
+        {"property_id": 22, "list": list_instances[0], "price": 1500.00, "unit_number": "B2", "layout": "2 Bed", "sq_ft": "1100",
+         "available": "2025-02-10", "notes": "Close to parking"},
+        {"property_id": 12, "list": list_instances[0], "price": 900.00, "unit_number": "C3", "layout": "Studio", "sq_ft": "500",
+         "available": "2025-01-20", "notes": "Special offer"},
+        {"property_id": 9, "list": list_instances[1], "price": 1300.00, "unit_number": "D4", "layout": "1 Bed", "sq_ft": "800",
+         "available": "2025-03-01", "notes": None},
+        {"property_id": 5, "list": list_instances[1], "price": 1400.00, "unit_number": "E5", "layout": "1 Bed", "sq_ft": "750",
+         "available": "2025-01-30", "notes": "Newly renovated"},
+        {"property_id": 14, "list": list_instances[2], "price": 2000.00, "unit_number": "F6", "layout": "3 Bed", "sq_ft": "1500",
+         "available": "2025-02-15", "notes": "Top floor"},
+        {"property_id": 29, "list": list_instances[3], "price": 1100.00, "unit_number": "G7", "layout": "Studio", "sq_ft": "600",
+         "available": "2025-02-20", "notes": "Discount available"},
+        {"property_id": 30, "list": list_instances[4], "price": 1700.00, "unit_number": "H8", "layout": "2 Bed", "sq_ft": "1000",
+         "available": "2025-02-05", "notes": "Pet friendly"},
     ]
 
     for option_data in options:
         Option.objects.create(**option_data)
-
-
-    # options_details = [
-    #     {"option": option_instances[0], "price": 1200.00, "unit_number": "A1", "layout": "1 Bed", "sq_ft": "750",
-    #      "available": "2025-02-01", "notes": "Pool view", "property": properties[0], "list": list_instances[0]},
-    #     {"price": 1500.00, "unit_number": "B2", "layout": "2 Bed", "sq_ft": "1100",
-    #      "available": "2025-02-10", "notes": "Close to parking"},
-    #     {"price": 900.00, "unit_number": "C3", "layout": "Studio", "sq_ft": "500",
-    #      "available": "2025-01-20", "notes": "Special offer"},
-    #     {"price": 1300.00, "unit_number": "D4", "layout": "1 Bed", "sq_ft": "800",
-    #      "available": "2025-03-01", "notes": None},
-    #     {"price": 1400.00, "unit_number": "E5", "layout": "1 Bed", "sq_ft": "750",
-    #      "available": "2025-01-30", "notes": "Newly renovated"},
-    #     {"price": 2000.00, "unit_number": "F6", "layout": "3 Bed", "sq_ft": "1500",
-    #      "available": "2025-02-15", "notes": "Top floor"},
-    #     {"price": 1100.00, "unit_number": "G7", "layout": "Studio", "sq_ft": "600",
-    #      "available": "2025-02-20", "notes": "Discount available"},
-    #     {"price": 1700.00, "unit_number": "H8", "layout": "2 Bed", "sq_ft": "1000",
-    #      "available": "2025-02-05", "notes": "Pet friendly", }
-    # ]
-
 
     deals = [
         {
@@ -118,5 +105,29 @@ def seed_test_account(user):
 
     for deal_data in deals:
         Deal.objects.create(**deal_data)
+
+    tasks = [
+        {
+            "description": "Run Jane's search",
+            "created": date.today() + timedelta(days=-5),
+            "is_active": True,
+            "user": user
+        },
+        {
+            "description": "Listing appointment with John",
+            "created": date.today() + timedelta(days=-4),
+            "is_active": True,
+            "user": user
+        },
+        {
+            "description": "Showings with Alice",
+            "created": date.today() + timedelta(days=-4),
+            "is_active": True,
+            "user": user
+        },
+    ]
+
+    for task_data in tasks:
+        Task.objects.create(**task_data)
 
     print(f"Seeded {len(clients)} clients for user: {user.email}")
