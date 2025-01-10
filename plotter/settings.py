@@ -29,15 +29,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'user',
-    'property',
     'agent',
+    'property',
+    'task',
     'gunicorn',
     'corsheaders',
     'djoser',
     'storages',
     'whitenoise',
     'django_filters',
-    'task'
 ]
 
 MIDDLEWARE = [

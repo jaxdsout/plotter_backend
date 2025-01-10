@@ -8,6 +8,6 @@ from rest_framework.filters import SearchFilter
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    filter_backends = [DjangoFilterBackend,]
+    filter_backends = [DjangoFilterBackend, SearchFilter,]
     filterset_fields = ['user']
 
