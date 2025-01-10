@@ -9,6 +9,8 @@ def seed_test_account(user):
     List.objects.filter(agent=user).delete()
     Deal.objects.filter(agent=user).delete()
     Card.objects.filter(agent=user).delete()
+    Task.objects.filter(user=user).delete()
+
 
     properties = Property.objects.all()[:3]
 
