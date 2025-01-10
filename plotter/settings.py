@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'user.middleware.sandbox.SandboxMiddleware',
 ]
 
 ROOT_URLCONF = 'plotter.urls'
@@ -180,4 +181,3 @@ STORAGES = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
-
