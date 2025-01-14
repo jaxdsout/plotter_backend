@@ -23,11 +23,11 @@ def seed_test_account(user):
     client_instances = [Client.objects.create(agent=user, **client) for client in clients]
 
     lists = [
-        {"client": client_instances[0], "uuid": "list-1"},
-        {"client": client_instances[1], "uuid": "list-2"},
-        {"client": client_instances[2], "uuid": "list-3"},
-        {"client": client_instances[0], "uuid": "list-4"},
-        {"client": client_instances[1], "uuid": "list-5"},
+        {"client": client_instances[0], "uuid": "cc9f4c17-235c-4c48-86f1-04119de5e49c"},
+        {"client": client_instances[1], "uuid": "09d4b17a-a53e-4165-b7ff-fae64319c7c0"},
+        {"client": client_instances[2], "uuid": "e000b1e5-d9ca-49ab-a1e4-28c3bb77e03f"},
+        {"client": client_instances[0], "uuid": "d8b5783f-b2fb-47ea-b2d8-e4a4d18bbd84"},
+        {"client": client_instances[1], "uuid": "d37d3460-044f-4dc8-bb75-be06810b65b5"},
     ]
 
     list_instances = [List.objects.create(agent=user, **list_data) for list_data in lists]
