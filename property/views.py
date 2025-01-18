@@ -1,9 +1,6 @@
 from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from django.utils.timezone import now
 from .models import Property, Commission
 from .serializers import PropertySerializer, CommissionSerializer
 

@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from .models import Property, Commission
-from drf_writable_nested import WritableNestedModelSerializer, NestedUpdateMixin, UniqueFieldsMixin
 
 
 class CommissionSerializer(serializers.ModelSerializer):
     prop_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Commission
         fields = (
