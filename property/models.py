@@ -1,6 +1,7 @@
 from django.db import models
 
 
+
 class Property(models.Model):
     MARKETS = [
         ('hou', 'Houston',),
@@ -19,4 +20,14 @@ class Property(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Commission(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='commissions')
+    send = models.IntegerField(default=0, blank=True)
+    escort = models.IntegerField(default=0, blank=True)
+    flat_fee = models.IntegerField(default=0, blank=True)
+    updated_date = models.DateField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+
 
