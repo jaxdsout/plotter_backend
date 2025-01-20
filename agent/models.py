@@ -47,7 +47,11 @@ class Option(models.Model):
     sq_ft = models.CharField(max_length=10, null=True, blank=True)
     available = models.DateField(blank=True, null=True)
     notes = models.TextField('Notes / Specials', blank=True, null=True)
+    order = models.PositiveIntegerField(default=0)
     list = models.ForeignKey(List, on_delete=models.CASCADE, related_name='options')
+
+    class Meta:
+        ordering = ['order']
 
 
 class Deal(models.Model):

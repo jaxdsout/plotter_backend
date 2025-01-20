@@ -8,7 +8,7 @@ class SandboxMiddleware(MiddlewareMixin):
     def process_request(self, request):
         SANDBOX_USERNAME = "aptatlas.test@gmail.com"
 
-        if request.path == "/users/me/" and request.method == "GET":
+        if request.path == "/jwt/create/" and request.method == "POST":
             auth_header = request.META.get('HTTP_AUTHORIZATION', None)
             if auth_header:
                 try:

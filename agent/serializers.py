@@ -117,6 +117,7 @@ class OptionSerializer(serializers.ModelSerializer):
             'sq_ft',
             'available',
             'notes',
+            'order',
             'list'
         )
 

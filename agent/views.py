@@ -2,16 +2,16 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from .models import Profile, Client, List, Option, Card, Deal
 from .serializers import ProfileSerializer, ClientSerializer, ListSerializer, OptionSerializer, CardSerializer, DealSerializer
-from rest_framework.parsers import MultiPartParser, FormParser
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.filters import SearchFilter
 from datetime import timedelta
 from django.utils import timezone
 from .emails import send_guest_card_email
 
+from rest_framework.exceptions import ValidationError
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
@@ -50,6 +50,40 @@ class ListViewSet(viewsets.ModelViewSet):
             return Response({"message": f"{options_deleted} options deleted."}, status=status.HTTP_204_NO_CONTENT)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['put'], url_path='update-options')
+    def update_options(self, request, pk=None):
+        try:
+            list_obj = self.get_object()
+
+            options_data = request.data.get('options', [])
+            if not isinstance(options_data, list):
+                raise ValidationError({"options": "Expected a list of options."})
+
+            # Process each option in the list
+            for idx, option_data in enumerate(options_data):
+                option_id = option_data.get('id')
+                if option_id is None:
+                    raise ValidationError({"options": f"Option at index {idx} is missing an ID."})
+
+                # Update the option's order and other fields if provided
+                Option.objects.filter(id=option_id, list=list_obj).update(
+                    order=idx,
+                    price=option_data.get('price', None),
+                    unit_number=option_data.get('unit_number', None),
+                    layout=option_data.get('layout', None),
+                    sq_ft=option_data.get('sq_ft', None),
+                    available=option_data.get('available', None),
+                    notes=option_data.get('notes', None),
+                )
+
+            return Response({'status': 'success', 'message': f'{len(options_data)} options updated.'},
+                            status=status.HTTP_200_OK)
+
+        except ValidationError as e:
+            return Response({'status': 'error', 'errors': e.detail}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'status': 'error', 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PublicListViewSet(viewsets.ReadOnlyModelViewSet):
