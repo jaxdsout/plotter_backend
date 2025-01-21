@@ -83,7 +83,7 @@ def seed_test_account(user):
 
     deals = [
         {
-            "property_id": 4,
+            "property_id": 1,
             "rent": 2000,
             "rate": 100,
             "commission": 2000.00,
@@ -99,7 +99,7 @@ def seed_test_account(user):
             "lease_end_date": date.today() + timedelta(days=290),
         },
         {
-            "property_id": 30,
+            "property_id": 2,
             "rent": 1650,
             "rate": 50,
             "commission": 825.00,
@@ -115,7 +115,7 @@ def seed_test_account(user):
             "lease_end_date": date.today() + timedelta(days=360),
         },
         {
-            "property_id": 9,
+            "property_id": 3,
             "rent": 1800,
             "rate": 150,
             "commission": 2700.00,
