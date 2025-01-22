@@ -17,7 +17,7 @@ class CommissionViewSet(viewsets.ModelViewSet):
     queryset = Commission.objects.all()
     serializer_class = CommissionSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_fields = ['property', 'active', ]
+    filterset_fields = ['property', 'active',   ]
     search_fields = ['property__name', ]
 
 
