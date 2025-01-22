@@ -127,13 +127,36 @@ class DealViewSet(viewsets.ModelViewSet):
         status = self.request.data.get('status', instance.status)
 
         if status == 'pend':
-            serializer.save(status='pend')
-            serializer.save(invoice_date=timezone.now().date())
-            sixty = instance.move_date + timedelta(days=60)
-            serializer.save(overdue_date=sixty)
+            instance.status = 'pend'
+            instance.invoice_date = timezone.now().date()
+            if instance.move_date:
+                instance.overdue_date = instance.move_date + timedelta(days=60)
+        elif status == 'paid':
+            instance.status = 'paid'
 
-        if status == 'paid':
-            serializer.save(status='paid')
+        serializer.save()
+
+# class DealViewSet(viewsets.ModelViewSet):
+#     queryset = Deal.objects.all()
+#     serializer_class = DealSerializer
+#     filter_backends = [DjangoFilterBackend,]
+#     filterset_fields = ['agent']
+#
+#     def perform_create(self, serializer):
+#         serializer.save(status='not')
+#
+#     def perform_update(self, serializer):
+#         instance = serializer.instance
+#         status = self.request.data.get('status', instance.status)
+#
+#         if status == 'pend':
+#             serializer.save(status='pend')
+#             serializer.save(invoice_date=timezone.now().date())
+#             sixty = instance.move_date + timedelta(days=60)
+#             serializer.save(overdue_date=sixty)
+#
+#         if status == 'paid':
+#             serializer.save(status='paid')
 
 
 class CardViewSet(viewsets.ModelViewSet):
