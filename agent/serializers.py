@@ -31,6 +31,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             'full_name',
             'email'
         )
+
         extra_kwargs = {
             'avatar': {'required': False}
         }
@@ -62,8 +63,30 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ListSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField()
+
+    class Meta:
+        model = List
+        fields = (
+            'id',
+            'date',
+            'uuid',
+            'agent',
+            'client',
+            'options',
+        )
+
+    def get_options(self, obj):
+        return OptionSerializer(obj.options.all(), many=True).data
+
+
+class PublicListSerializer(serializers.ModelSerializer):
+    options = serializers.SerializerMethodField()
     client_name = serializers.SerializerMethodField()
     agent_name = serializers.SerializerMethodField()
+    agent_avatar = serializers.SerializerMethodField()
+    agent_email = serializers.SerializerMethodField()
+    agent_phone = serializers.SerializerMethodField()
+
 
     class Meta:
         model = List
@@ -73,6 +96,9 @@ class ListSerializer(serializers.ModelSerializer):
             'uuid',
             'agent',
             'agent_name',
+            'agent_avatar',
+            'agent_phone',
+            'agent_email',
             'client',
             'client_name',
             'options',
@@ -89,6 +115,21 @@ class ListSerializer(serializers.ModelSerializer):
     def get_agent_name(self, obj):
         if obj.client:
             return f"{obj.agent.first_name} {obj.agent.last_name}"
+        return None
+
+    def get_agent_avatar(self, obj):
+        if obj.client:
+            return obj.agent.profile.avatar.url
+        return None
+
+    def get_agent_email(self, obj):
+        if obj.client:
+            return obj.agent.profile.user.email
+        return None
+
+    def get_agent_phone(self, obj):
+        if obj.client:
+            return obj.agent.profile.phone_number
         return None
 
 

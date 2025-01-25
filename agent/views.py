@@ -1,7 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
 from .models import Profile, Client, List, Option, Card, Deal
-from .serializers import ProfileSerializer, ClientSerializer, ListSerializer, OptionSerializer, CardSerializer, DealSerializer
+from .serializers import (ProfileSerializer, ClientSerializer, ListSerializer, OptionSerializer, CardSerializer,
+                          DealSerializer, PublicListSerializer)
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -12,6 +13,7 @@ from django.utils import timezone
 from .emails import send_guest_card_email
 
 from rest_framework.exceptions import ValidationError
+
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
@@ -87,7 +89,7 @@ class ListViewSet(viewsets.ModelViewSet):
 
 
 class PublicListViewSet(viewsets.ReadOnlyModelViewSet):
-    serializer_class = ListSerializer
+    serializer_class = PublicListSerializer
     permission_classes = [AllowAny]
 
     def get_queryset(self):
