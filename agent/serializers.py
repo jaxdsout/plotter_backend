@@ -63,6 +63,8 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ListSerializer(serializers.ModelSerializer):
     options = serializers.SerializerMethodField()
+    client_name = serializers.SerializerMethodField()
+    agent_name = serializers.SerializerMethodField()
 
     class Meta:
         model = List
@@ -72,11 +74,23 @@ class ListSerializer(serializers.ModelSerializer):
             'uuid',
             'agent',
             'client',
+            'client_name',
+            'agent_name',
             'options',
         )
 
     def get_options(self, obj):
         return OptionSerializer(obj.options.all(), many=True).data
+
+    def get_client_name(self, obj):
+        if obj.client:
+            return f"{obj.client.first_name} {obj.client.last_name}"
+        return None
+
+    def get_agent_name(self, obj):
+        if obj.client:
+            return f"{obj.agent.first_name} {obj.agent.last_name}"
+        return None
 
 
 class PublicListSerializer(serializers.ModelSerializer):
