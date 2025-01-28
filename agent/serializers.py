@@ -3,6 +3,7 @@ from .models import Profile, Client, List, Option, Deal, Card
 from property.serializers import PropertySerializer
 
 
+
 class ProfileSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     first_name = serializers.SerializerMethodField()
@@ -133,7 +134,10 @@ class PublicListSerializer(serializers.ModelSerializer):
 
     def get_agent_avatar(self, obj):
         if obj.client:
-            return obj.agent.profile.avatar.url
+            if obj.agent.profile.avatar:
+                return obj.agent.profile.avatar.url
+            else:
+                return "https://plotter-medi-0814.s3.us-east-2.amazonaws.com/default.png"
         return None
 
     def get_agent_email(self, obj):
