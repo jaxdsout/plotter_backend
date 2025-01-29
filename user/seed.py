@@ -1,4 +1,4 @@
-from agent.models import Client, List, Option, Deal, Card
+from agent.models import Client, List, Option, Deal, Card, Profile
 from property.models import Property
 from task.models import Task
 from datetime import date, timedelta
@@ -8,14 +8,22 @@ from django.db import transaction
 def seed_test_account(user):
     try:
         with transaction.atomic():
+            Profile.objects.filter(user=user).delete()
             Client.objects.filter(agent=user).delete()
             List.objects.filter(agent=user).delete()
             Deal.objects.filter(agent=user).delete()
             Card.objects.filter(agent=user).delete()
             Task.objects.filter(user=user).delete()
 
+            profile = {
+                "user": user,
+                "trec": "000001",
+                "website": "www.aptatlas.com",
+                "phone_number": "5555555555",
+                "avatar": "default_Da0TpPJ.png"
+            }
 
-            properties = Property.objects.all()[:3]
+            profile_instance = Profile.objects.create(**profile)
 
             clients = [
                 {"first_name": "John", "last_name": "Doe", "email": "john.doe@example.com", "phone_number": "1234567890"},
@@ -35,24 +43,6 @@ def seed_test_account(user):
 
             list_instances = [List.objects.create(agent=user, **list_data) for list_data in lists]
 
-            # options = [
-            #     {"property_id": 4, "list": list_instances[0], "price": 1200.00, "unit_number": "A1", "layout": "1 Bed", "sq_ft":"750",
-            #      "available": "2025-02-01", "notes": "Pool view", "order": 0},
-            #     {"property_id": 22, "list": list_instances[0], "price": 1500.00, "unit_number": "B2", "layout": "2 Bed", "sq_ft": "1100",
-            #      "available": "2025-02-10", "notes": "Close to parking", "order": 0},
-            #     {"property_id": 12, "list": list_instances[0], "price": 900.00, "unit_number": "C3", "layout": "Studio", "sq_ft": "500",
-            #      "available": "2025-01-20", "notes": "Special offer", "order": 0},
-            #     {"property_id": 9, "list": list_instances[1], "price": 1300.00, "unit_number": "D4", "layout": "1 Bed", "sq_ft": "800",
-            #      "available": "2025-03-01", "notes": None, "order": 0},
-            #     {"property_id": 5, "list": list_instances[1], "price": 1400.00, "unit_number": "E5", "layout": "1 Bed", "sq_ft": "750",
-            #      "available": "2025-01-30", "notes": "Newly renovated", "order": 0},
-            #     {"property_id": 14, "list": list_instances[2], "price": 2000.00, "unit_number": "F6", "layout": "3 Bed", "sq_ft": "1500",
-            #      "available": "2025-02-15", "notes": "Top floor", "order": 0},
-            #     {"property_id": 29, "list": list_instances[3], "price": 1100.00, "unit_number": "G7", "layout": "Studio", "sq_ft": "600",
-            #      "available": "2025-02-20", "notes": "Discount available", "order": 0},
-            #     {"property_id": 30, "list": list_instances[4], "price": 1700.00, "unit_number": "H8", "layout": "2 Bed", "sq_ft": "1000",
-            #      "available": "2025-02-05", "notes": "Pet friendly", "order": 0},
-            # ]
 
             options = [
                 {"property_id": 1, "list": list_instances[0], "price": 1200.00, "unit_number": "A1", "layout": "1 Bed",

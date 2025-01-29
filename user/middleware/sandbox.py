@@ -1,7 +1,6 @@
 from django.utils.deprecation import MiddlewareMixin
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from django.contrib.auth import get_user_model
-from ..seed import seed_test_account
+from user.seed import seed_test_account
 
 
 class SandboxMiddleware(MiddlewareMixin):
