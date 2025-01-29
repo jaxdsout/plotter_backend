@@ -35,7 +35,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['agent']
-    search_fields = ['first_name', 'last_name']
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number']
 
 
 class ListViewSet(viewsets.ModelViewSet):
@@ -62,13 +62,11 @@ class ListViewSet(viewsets.ModelViewSet):
             if not isinstance(options_data, list):
                 raise ValidationError({"options": "Expected a list of options."})
 
-            # Process each option in the list
             for idx, option_data in enumerate(options_data):
                 option_id = option_data.get('id')
                 if option_id is None:
                     raise ValidationError({"options": f"Option at index {idx} is missing an ID."})
 
-                # Update the option's order and other fields if provided
                 Option.objects.filter(id=option_id, list=list_obj).update(
                     order=idx,
                     price=option_data.get('price', None),
