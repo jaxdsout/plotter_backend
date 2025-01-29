@@ -106,7 +106,7 @@ def seed_test_account(user):
                     "rent": 1650,
                     "rate": 50,
                     "commission": 825.00,
-                    "status": "pend",
+                    "status": "not",
                     "flat_fee": None,
                     "move_date": date.today() + timedelta(days=-5),
                     "unit_no": "202B",

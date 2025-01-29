@@ -11,6 +11,7 @@ from rest_framework.filters import SearchFilter
 from datetime import timedelta
 from django.utils import timezone
 from .emails import send_guest_card_email
+from django.db.models import Q
 
 from rest_framework.exceptions import ValidationError
 
@@ -37,6 +38,19 @@ class ClientViewSet(viewsets.ModelViewSet):
     filterset_fields = ['agent']
     search_fields = ['first_name', 'last_name', 'email', 'phone_number']
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        search_terms = self.request.query_params.get('search', None)
+
+        if search_terms:
+            search_terms = search_terms.split()
+            query = Q()
+            for term in search_terms:
+                query |= Q(first_name__icontains=term) | Q(last_name__icontains=term) | Q(email__icontains=term) | Q(phone_number__icontains=term)
+
+            queryset = queryset.filter(query)
+
+        return queryset
 
 class ListViewSet(viewsets.ModelViewSet):
     queryset = List.objects.all()
@@ -148,6 +162,7 @@ class CardViewSet(viewsets.ModelViewSet):
             agent=card.agent,
             client=card.client,
             property=card.property,
+            msg=card.msg,
             interested=card.interested,
             move_by=card.move_by
         )

@@ -3,7 +3,7 @@ from django.conf import settings
 from agent.models import Profile
 
 
-def send_guest_card_email(agent, client, property, interested, move_by):
+def send_guest_card_email(agent, client, property, msg, interested, move_by):
     subject = f"GUEST CARD: {client.first_name} {client.last_name}"
     recipient_list = [property.email, agent.email]
 
@@ -12,11 +12,14 @@ def send_guest_card_email(agent, client, property, interested, move_by):
     except Profile.DoesNotExist:
         profile = None
 
+    if msg is None:
+        msg = f"Below is the guest card info for my client {client.first_name}. Please let me know if there are any issues."
+
     html_content = f"""
        <html>
            <body>
                <p>Hey team,</p>
-               <p>Below is the guest card info for my client {client.first_name}. Please let me know if there are any issues.</p>
+               <p>{msg}</p>
                <ul>
                    <li><strong>Name:</strong> {client.first_name} {client.last_name}</li>
                    <li><strong>Phone:</strong> {client.phone_number}</li>

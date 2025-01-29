@@ -243,6 +243,7 @@ class CardSerializer(serializers.ModelSerializer):
             'property',
             'agent',
             'client',
+            'msg',
             'interested',
             'move_by'
         )

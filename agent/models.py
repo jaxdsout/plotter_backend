@@ -94,6 +94,7 @@ class Card(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='cards')
     agent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards')
     client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='cards')
+    msg = models.TextField(default='Below is the guest card info for my client . Please let me know if there are any issues.', null=True, blank=True)
     interested = models.CharField(max_length=255)
     move_by = models.CharField(max_length=255)
 
