@@ -45,7 +45,7 @@ def seed_test_account(user):
 
 
             options = [
-                {"property_id": 1, "list": list_instances[0], "price": 1200.00, "unit_number": "A1", "layout": "1 Bed",
+                {"property_id": 4, "list": list_instances[0], "price": 1200.00, "unit_number": "A1", "layout": "1 Bed",
                  "sq_ft": "750",
                  "available": "2025-02-01", "notes": "Pool view", "order": 0},
                 {"property_id": 2, "list": list_instances[0], "price": 1500.00, "unit_number": "B2", "layout": "2 Bed",
@@ -54,13 +54,13 @@ def seed_test_account(user):
                 {"property_id": 3, "list": list_instances[0], "price": 900.00, "unit_number": "C3", "layout": "Studio",
                  "sq_ft": "500",
                  "available": "2025-01-20", "notes": "Special offer", "order": 0},
-                {"property_id": 1, "list": list_instances[1], "price": 1300.00, "unit_number": "D4", "layout": "1 Bed",
+                {"property_id": 5, "list": list_instances[1], "price": 1300.00, "unit_number": "D4", "layout": "1 Bed",
                  "sq_ft": "800",
                  "available": "2025-03-01", "notes": None, "order": 0},
-                {"property_id": 1, "list": list_instances[1], "price": 1400.00, "unit_number": "E5", "layout": "1 Bed",
+                {"property_id": 6, "list": list_instances[1], "price": 1400.00, "unit_number": "E5", "layout": "1 Bed",
                  "sq_ft": "750",
                  "available": "2025-01-30", "notes": "Newly renovated", "order": 0},
-                {"property_id": 2, "list": list_instances[2], "price": 2000.00, "unit_number": "F6", "layout": "3 Bed",
+                {"property_id": 8, "list": list_instances[2], "price": 2000.00, "unit_number": "F6", "layout": "3 Bed",
                  "sq_ft": "1500",
                  "available": "2025-02-15", "notes": "Top floor", "order": 0},
                 {"property_id": 3, "list": list_instances[3], "price": 1100.00, "unit_number": "G7", "layout": "Studio",
@@ -76,7 +76,7 @@ def seed_test_account(user):
 
             deals = [
                 {
-                    "property_id": 1,
+                    "property_id": 4,
                     "rent": 2000,
                     "rate": 100,
                     "commission": 2000.00,
