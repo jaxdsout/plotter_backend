@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'agent',
     'property',
     'task',
+    'scraper',
     'gunicorn',
     'corsheaders',
     'djoser',
