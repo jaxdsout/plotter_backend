@@ -154,6 +154,8 @@ class DealViewSet(viewsets.ModelViewSet):
 class CardViewSet(viewsets.ModelViewSet):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
+    filter_backends = [DjangoFilterBackend, ]
+    filterset_fields = ['agent']
 
     def perform_create(self, serializer):
         card = serializer.save()

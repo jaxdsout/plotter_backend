@@ -3,7 +3,6 @@ from .models import Profile, Client, List, Option, Deal, Card
 from property.serializers import PropertySerializer
 
 
-
 class ProfileSerializer(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     first_name = serializers.SerializerMethodField()
@@ -236,14 +235,26 @@ class DealSerializer(serializers.ModelSerializer):
 
 
 class CardSerializer(serializers.ModelSerializer):
+    prop_name = serializers.SerializerMethodField()
+    client_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Card
         fields = (
+            'id',
+            'date',
             'property',
+            'prop_name',
             'agent',
             'client',
+            'client_name',
             'msg',
             'interested',
             'move_by'
         )
+
+    def get_prop_name(self, obj):
+        return obj.property.name
+
+    def get_client_name(self, obj):
+        return obj.client.first_name + " " + obj.client.last_name
