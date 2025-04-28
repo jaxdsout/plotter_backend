@@ -10,13 +10,13 @@ Django, DRF, Djoser, SimpleJWT, AWS S3 Buckets
 
 ### Routes
 
-/users
-/profiles
-/clients
-/lists
-/options
-/properties
-/commissions
-/deals
-/cards
+/users <br />
+/profiles <br />
+/clients <br />
+/lists <br />
+/options <br />
+/properties <br />
+/commissions <br />
+/deals <br />
+/cards <br />
 /tasks
