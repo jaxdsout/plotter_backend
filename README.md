@@ -8,7 +8,7 @@ Full CRUD web app with mapmaking features, client management, invoice logging & 
 
 Django, DRF, Djoser, SimpleJWT, AWS S3 Buckets
 
-### Routes
+### Endpoints
 
 /users <br />
 /profiles <br />
